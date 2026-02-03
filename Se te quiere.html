@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para una STAY especial</title>
+    <style>
+        body {
+            margin: 0; padding: 0; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, #2c0000 0%, #000000 100%);
+            font-family: 'Arial', sans-serif; overflow: hidden; text-align: center;
+        }
+
+        #contenedor {
+            padding: 25px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.2); width: 85%; z-index: 2;
+        }
+
+        h1 { color: #ffffff; font-size: 1.2rem; text-shadow: 2px 2px 4px #000; margin-bottom: 20px; }
+
+        /* Área de mensajes de culpa */
+        #mensaje-culpa {
+            height: 30px; color: #ff4d4d; font-weight: bold;
+            font-size: 1.1rem; margin-bottom: 15px; text-shadow: 1px 1px 2px #000;
+        }
+
+        .botones { display: flex; flex-direction: column; align-items: center; gap: 20px; height: 250px; }
+
+        button {
+            width: 140px; height: 80px; border: 2px solid #fff; border-radius: 20px;
+            font-weight: bold; color: white; text-shadow: 1px 1px 3px #000;
+            background-size: cover; background-position: center;
+            touch-action: manipulation; transition: transform 0.2s;
+        }
+
+        #si {
+            background-image: url('https://media.giphy.com');
+            animation: latido 1.2s infinite; z-index: 100;
+        }
+
+        #no {
+            background-image: url('https://media.giphy.com');
+        }
+
+        @keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        #transicion-corazon {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 500px; color: #ff4d4d; z-index: 999;
+            transition: transform 0.8s ease-in;
+        }
+
+        #pantalla-final {
+            display: none; position: fixed; inset: 0; background: #000;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; padding: 20px;
+        }
+
+        .gatito { width: 250px; border-radius: 20px; border: 3px solid #ff4d4d; }
+        h2 { color: white; font-size: 1.1rem; margin-top: 20px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <div id="contenedor">
+        <h1 id="pregunta">Señorita vengo a pedirle amablemente que si quiere ser mi San Valentín o alguien especial para mí en este día como yo lo sería para usted, ¿que dice?</h1>
+        
+        <!-- Aquí salen las frases de culpa -->
+        <div id="mensaje-culpa"></div>
+
+        <div class="botones">
+            <button id="si">SÍ</button>
+            <button id="no">NO</button>
+        </div>
+    </div>
+
+    <div id="transicion-corazon">❤️</div>
+
+    <div id="pantalla-final">
+        <img class="gatito" src="https://media.tenor.com">
+        <h2>felicidades ahora usted es parte de un día muy fantástico junto a alguien no tan fantástico jeje, lindo día señorita</h2>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="https://www.chosic.com" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const btnSi = document.getElementById('si');
+        const btnNo = document.getElementById('no');
+        const culpa = document.getElementById('mensaje-culpa');
+        const corazon = document.getElementById('transicion-corazon');
+        const final = document.getElementById('pantalla-final');
+        const musica = document.getElementById('musica');
+
+        const frases = [
+            "¿Por qué no? 🥺",
+            "No seas mala...",
+            "¡Dale al SÍ! 👆",
+            "Anda acepta sipi",
+            "Bang Chan se pondrá triste 💔",
+            "¿Tan poquito me quieres? 😔",
+            "¡Ese botón está roto!",
+            "Di que síiii ❤️"
+        ];
+        let i = 0;
+
+        const moverNo = (e) => {
+            if(e) e.preventDefault();
+            
+            // Mensaje de culpa
+            culpa.innerText = frases[i];
+            i = (i + 1) % frases.length;
+
+            // Movimiento
+            const maxX = window.innerWidth - btnNo.offsetWidth;
+            const maxY = window.innerHeight - btnNo.offsetHeight;
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = Math.random() * maxX + 'px';
+            btnNo.style.top = Math.random() * maxY + 'px';
+        };
+
+        btnNo.addEventListener('touchstart', moverNo);
+        btnNo.addEventListener('mouseover', moverNo);
+
+        btnSi.addEventListener('click', () => {
+            corazon.style.display = 'block';
+            musica.play();
+            setTimeout(() => { corazon.style.transform = 'translate(-50%, -50%) scale(5)'; }, 50);
+            setTimeout(() => { final.style.display = 'flex'; corazon.style.display = 'none'; }, 800);
+        });
+    </script>
+</body>
+</html>
